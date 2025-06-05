@@ -38,7 +38,7 @@ public partial class ListingEntityMapper
             Index = listing.Index,
             IsActive = true, // Default to active for existing listings in database
             Logo = listing.Logo ?? string.Empty,
-            Image = listing.Image ?? string.Empty,
+            Image = $"{listing.ExternalId}/{listing.Image ?? string.Empty}",
             Link = listing.Link ?? string.Empty,
             Name = listing.Name ?? string.Empty,
             Category = listing.Category ?? string.Empty,
@@ -66,7 +66,7 @@ public partial class ListingEntityMapper
             Reviews = listing.Reviews?.Select(MapToReviewResult).ToList() ?? [],
             OpeningHours = openingHours,
             Contacts = listing.Contacts?.Select(MapToContactResult).ToList() ?? [],
-            Gallery = listing.Images?.Select(MapToListingImageResult).ToList() ?? []
+            Gallery = listing.Images?.Select(image => MapToListingImageResult(listing.ExternalId, image)).ToList() ?? []
         };
         
         return result;
@@ -118,11 +118,11 @@ public partial class ListingEntityMapper
     /// <summary>
     /// Map ListingImage entity to domain model with field name mapping
     /// </summary>
-    public ListingImageResult MapToListingImageResult(Data.Entities.ValueObjects.ListingImage image)
+    public ListingImageResult MapToListingImageResult(Guid id,Data.Entities.ValueObjects.ListingImage image)
     {
         return new ListingImageResult
         {
-            Url = image.Image ?? string.Empty,
+            Url = $"{id}/{image.Image ?? string.Empty}",
             Alt = image.Title ?? string.Empty,
             Caption = image.Title ?? string.Empty
         };
