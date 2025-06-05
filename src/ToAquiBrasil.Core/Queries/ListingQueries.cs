@@ -214,7 +214,7 @@ public class ListingQueries(
             
             Gallery = ((IEnumerable<dynamic>)listing.Images).Select(img => new ListingImageResult
             {
-                Url = img.Image ?? string.Empty,
+                Url = $"{Guid.NewGuid()}/{img.Image ?? string.Empty}",
                 Alt = img.Title ?? string.Empty,
                 Caption = img.Title ?? string.Empty
             }).ToList(),
