@@ -24,7 +24,7 @@ jobs:
           dotnet-version: '9.0'
 
       - name: Build with dotnet
-        run: src/ToAquiBrasil.Api/ToAquiBrasil.Api.csproj --configuration Release
+        run: dotnet build src/ToAquiBrasil.Api/ToAquiBrasil.Api.csproj --configuration Release
 
       - name: dotnet publish
         run: dotnet publish src/ToAquiBrasil.Api/ToAquiBrasil.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
