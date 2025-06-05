@@ -6,9 +6,9 @@ name: Build and deploy ASP.Net Core app to Azure Web App - toaquibrasil
 on:
   push:
     branches:
-      - master
+      - main
     paths:
-      - "ToAquiBrasil.Api/**"
+      - "src/ToAquiBrasil.Api/**"
   workflow_dispatch:
 
 jobs:
