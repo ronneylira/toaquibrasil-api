@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "src/ToAquiBrasil.Api/**"
   workflow_dispatch:
 
 jobs:
@@ -23,13 +21,13 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.x"
+          dotnet-version: '9.0'
 
       - name: Build with dotnet
-        run: dotnet build src/ToAquiBrasil.Api/ToAquiBrasil.Api.csproj --configuration Release
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/ToAquiBrasil.Api/ToAquiBrasil.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -41,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: "Production"
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -52,18 +50,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C4CC6D8B903D4E39A65713E3BDBCEDDE }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D366473BB9074E04A196115CE4CF87C8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8B4F3CE270D64823AC746265DF22A258 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "toaquibrasil"
-          slot-name: "Production"
+          app-name: 'toaquibrasil'
+          slot-name: 'Production'
           package: .
+          
